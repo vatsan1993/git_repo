@@ -46,7 +46,7 @@ public class ForcastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id=item.getItemId();
-        if(id==R.string.action_refresh)
+        if(id==R.id.action_settings)
         {
             fetchWeatherData fetchingdata=new fetchWeatherData();
             fetchingdata.execute();
@@ -57,13 +57,22 @@ public class ForcastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         String tmp[] = {
-                "Sunday-", "monday", "tueday", "wednesday", "thursday", "friday", "saturday"
+                "Mon 6/23 - Sunny - 31/17",
+                "Tue 6/24 - Foggy - 21/8",
+                "Wed 6/25 - Cloudy - 22/17",
+                "Thurs 6/26 - Rainy - 18/11",
+                "Fri 6/27 - Foggy - 21/10",
+                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+                "Sun 6/29 - Sunny - 20/7"
         };
         ArrayList<String> fake_data = new ArrayList<String>(Arrays.asList(tmp));
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forcast, R.id.list_item_forecast_textview, fake_data);
+
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView mylistview = (ListView) rootView.findViewById(R.id.fragment_main_listview);
         mylistview.setAdapter(adapt);
 
@@ -82,7 +91,10 @@ public class ForcastFragment extends Fragment {
             String forcastJsonString = null;
 
             try {
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=London,us&mode=json&appid=3bf3416656f6602769ffcbf872613412&cnt=7&units=metric");
+                String baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7";
+                String apiKey = "&APPID=3bf3416656f6602769ffcbf872613412" ;
+                URL url = new URL(baseUrl.concat(apiKey));
+                //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=London,us&mode=json&appid=3bf3416656f6602769ffcbf872613412&cnt=7&units=metric");
 
                 http_conn = (HttpURLConnection) url.openConnection();
                 http_conn.setRequestMethod("GET");
